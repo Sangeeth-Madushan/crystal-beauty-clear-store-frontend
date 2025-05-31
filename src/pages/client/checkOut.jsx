@@ -35,13 +35,15 @@ export default function CheckoutPage(){
 
     return(
         <div className="w-full h-full flex flex-col items-center relative pt-[80px]">
-            <div className="w-[400px] h-[80px] shadow-2xl absolute top-1 right-1 flex flex-col justify-center items-center">
+            <div className="w-[400px] h-[80px] shadow-2xl my-4 flex flex-col justify-center items-center">
+
+
                 <p className="text-2xl text-secondary font-bold">Total: 
                     <span className="text-accent font-bold mx-2">
                         {getTotal().toFixed(2)}
                     </span>
                 </p>
-                <button  className="text-white bg-accent px-4 py-2 rounded-lg font-bold hover:bg-secondary transition-all duration-300">
+                <button  className=" bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold hover:bg-secondary transition-all duration-300">
                     Place Order
                 </button>
             </div>
@@ -64,12 +66,12 @@ export default function CheckoutPage(){
                                     }
                                 </div>
                                 <div className="max-w-[100px] w-[100px]  h-full flex flex-row justify-evenly items-center">
-                                    <button className="text-white font-bold rounded-xl hover:bg-secondary p-2 text-xl cursor-pointer aspect-square bg-accent"
+                                    <button className="text-amber-950 font-bold rounded-xl hover:bg-secondary p-2 text-xl cursor-pointer aspect-square bg-accent"
                                     onClick={()=>{
                                         changeQty(index, -1)
                                     }}><BiMinus/></button>
                                     <h1 className="text-xl text-secondary font-semibold h-full flex items-center">{item.qty}</h1>
-                                    <button className="text-white font-bold rounded-xl hover:bg-secondary p-2 text-xl cursor-pointer  aspect-square bg-accent" onClick={()=>{
+                                    <button className="text-amber-950 font-bold rounded-xl hover:bg-secondary p-2 text-xl cursor-pointer  aspect-square bg-accent" onClick={()=>{
                                         changeQty(index, 1)
                                     }}><BiPlus/></button>                                
                                 </div>

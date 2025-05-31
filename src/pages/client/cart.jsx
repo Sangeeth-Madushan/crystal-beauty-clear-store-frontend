@@ -8,7 +8,7 @@ export default function CartPage() {
 
   return (
     <div className="w-full h-full flex flex-col items-center pt-[80px]">
-      <div className="w-[400px] h-[80px] shadow-2xl absolute top-1 right-1 flex flex-col justify-center items-center">
+      <div className="w-[400px] h-[80px] shadow-2xl my-4 flex flex-col justify-center items-center">
         <p className="text-2xl text-secondary font-bold">
           Total:
           <span className="text-accent font-bold mx-2">
@@ -20,7 +20,7 @@ export default function CartPage() {
           state={{
             cart: cart,
           }}
-          className="text-white bg-accent px-4 py-2 rounded-lg font-bold hover:bg-secondary transition-all duration-300"
+          className=" bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold hover:bg-secondary transition-all duration-300"
         >
           Checkout
         </Link>
