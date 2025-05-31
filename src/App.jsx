@@ -14,6 +14,7 @@ import EditProductPage from "./pages/admin/editProductPage";
 import Users from "./pages/userPage";
 import ProductOverviewPage from "./pages/client/productOverview";
 import CartPage from "./pages/client/cart";
+import CheckoutPage from "./pages/client/checkOut";
  
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route path="*" element={<h1 className="pt-[80px]">Not Found!!</h1>} />
             <Route path="overview/:id" element={<ProductOverviewPage/>} />
             <Route path="cart" element={<CartPage/>}></Route>
+            <Route path="/checkout" element={<CheckoutPage/>}/>
           </Route>
 
           <Route path="/login" element={<Login />} />
