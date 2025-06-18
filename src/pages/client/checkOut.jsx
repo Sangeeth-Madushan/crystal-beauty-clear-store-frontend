@@ -1,96 +1,199 @@
-import { useState } from "react"
+import { useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
 
-import { BiMinus, BiPlus, BiTrash } from "react-icons/bi"
-import { Link, useLocation } from "react-router-dom"
+import { BiMinus, BiPlus, BiTrash } from "react-icons/bi";
+import { Link, useLocation } from "react-router-dom";
 
-export default function CheckoutPage(){
-    const location = useLocation()
-    console.log(location.state.cart)
+export default function CheckoutPage() {
+  const location = useLocation();
+  console.log(location.state.cart);
 
-    const [cart,setCart] = useState(location.state?.cart || [])
+  const [cart, setCart] = useState(location.state?.cart || []);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [address, setAddress] = useState("");
 
-    function getTotal() {
-        let total = 0
-        cart.forEach((item)=>{
-            total += item.price * item.qty
-        })
-        return total
+  function getTotal() {
+    let total = 0;
+    cart.forEach((item) => {
+      total += item.price * item.qty;
+    });
+    return total;
+  }
+  function removeFromCart(index) {
+    const newCart = cart.filter((item, i) => i !== index);
+    setCart(newCart);
+  }
+
+  function changeQty(index, qty) {
+    const newQty = cart[index].qty + qty;
+    if (newQty <= 0) {
+      removeFromCart(index);
+      return;
+    } else {
+      const newCart = [...cart];
+      newCart[index].qty = newQty;
+      setCart(newCart);
     }
-    function removeFromCart(index) {
-        const newCart = cart.filter((item, i) => i !== index)
-        setCart(newCart)        
+  }
+
+  async function placeOrder() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("Please login to place order");
+      return;
     }
 
-    function changeQty(index, qty){
-        const newQty = cart[index].qty + qty
-        if(newQty <= 0){
-            removeFromCart(index)
-            return
-        }else{
-            const newCart = [...cart]
-            newCart[index].qty = newQty
-            setCart(newCart)
+    const orderInformation = {
+      products: [],
+      phone: phoneNumber,
+      address: address,
+    };
+
+    for (let i = 0; i < cart.length; i++) {
+      const item = {
+        productId: cart[i].productId,
+        qty: cart[i].qty,
+      };
+      orderInformation.products[i] = item;
+    }
+    try {
+      const res = await axios.post(
+        import.meta.env.VITE_BACKEND_URL + "/api/orders",
+        orderInformation,
+        {
+          headers: {
+            Authorization: "Bearer " + token,
+          },
         }
+      );
+      toast.success("Order placed successfully");
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+      toast.error("Error placing order");
+      return;
     }
+  }
 
-    return(
-        <div className="w-full h-full flex flex-col items-center relative pt-[80px]">
-            <div className="w-[400px] h-[80px] shadow-2xl my-4 flex flex-col justify-center items-center">
+  return (
+    <div className="w-full min-h-screen bg-gray-50 flex flex-col items-center py-8 px-4">
+      <div className="w-full max-w-4xl mb-8">
+        <h1 className="text-3xl font-bold text-secondary">Checkout</h1>
+        <div className="w-20 h-1 bg-accent mt-2"></div>
+      </div>
 
+      <div className="w-full max-w-4xl bg-white rounded-xl shadow-lg p-6 mb-8">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          Order Summary
+        </h2>
 
-                <p className="text-2xl text-secondary font-bold">Total: 
-                    <span className="text-accent font-bold mx-2">
-                        {getTotal().toFixed(2)}
-                    </span>
-                </p>
-                <button  className=" bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-bold hover:bg-secondary transition-all duration-300">
-                    Place Order
-                </button>
-            </div>
-            {
-                cart.map(
-                    (item , index)=>{
-                        return(
-                            <div key={item.productId} className="w-[600px] my-4 h-[100px] rounded-tl-3xl rounded-bl-3xl bg-primary shadow-2xl flex flex-row relative justify-center items-center">
-                                <img src={item.image} className="w-[100px] h-[100px] object-cover rounded-3xl"/>
-                                <div className="w-[250px] h-full flex flex-col justify-center items-start pl-4">
-                                    <h1 className="text-xl text-secondary font-semibold">{item.name}</h1>
-                                    <h1 className="text-md text-gray-600 font-semibold">{item.productId}</h1>
-                                    {
-                                        item.labelledPrice > item.price ?
-                                        <div>
-                                            <span className="text-md mx-1 text-gray-500 line-through">{item.labelledPrice.toFixed(2)}</span>
-                                            <span className="text-md mx-1 font-bold text-accent">{item.price.toFixed(2)}</span>
-                                        </div>
-                                        :<span className="text-md mx-1 font-bold text-accent">{item.price.toFixed(2)}</span>
-                                    }
-                                </div>
-                                <div className="max-w-[100px] w-[100px]  h-full flex flex-row justify-evenly items-center">
-                                    <button className="text-amber-950 font-bold rounded-xl hover:bg-secondary p-2 text-xl cursor-pointer aspect-square bg-accent"
-                                    onClick={()=>{
-                                        changeQty(index, -1)
-                                    }}><BiMinus/></button>
-                                    <h1 className="text-xl text-secondary font-semibold h-full flex items-center">{item.qty}</h1>
-                                    <button className="text-amber-950 font-bold rounded-xl hover:bg-secondary p-2 text-xl cursor-pointer  aspect-square bg-accent" onClick={()=>{
-                                        changeQty(index, 1)
-                                    }}><BiPlus/></button>                                
-                                </div>
-                                {/* total */}
-                                <div className="w-[200px] h-full flex flex-col justify-center items-end pr-4">
-                                    <h1 className="text-2xl text-secondary font-semibold">Rs. {(item.price*item.qty).toFixed(2)}</h1>
-                                </div>
-                                <button className="absolute text-red-600 cursor-pointer hover:bg-red-600 hover:text-white rounded-full p-2 right-[-35px] " onClick={
-                                    ()=>{
-                                        removeFromCart(index)                                        
-                                    }
-                                }>
-                                    <BiTrash/>
-                                </button>
-                            </div> 
-                        )
-                    }
-                )
-            }
+        <div className="flex justify-between items-center mb-6 p-4 bg-gray-100 rounded-lg">
+          <span className="text-lg font-medium text-gray-700">Total:</span>
+          <span className="text-2xl font-bold text-accent">
+            Rs. {getTotal().toFixed(2)}
+          </span>
         </div>
-    )
+
+        <div className="space-y-4 mb-6">
+          <h3 className="text-lg font-medium text-gray-700">
+            Contact Information
+          </h3>
+          <input
+            type="tel"
+            placeholder="Phone Number"
+            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+          />
+          <textarea
+            placeholder="Delivery Address"
+            rows={3}
+            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-accent"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </div>
+
+        <button
+          className="w-auto min-w-[200px] bg-[#6d447d] hover:bg-[#5a3866] text-white py-3 px-8 rounded-lg font-bold transition-all duration-300 shadow-md hover:shadow-lg mx-auto "
+          onClick={placeOrder}
+        >
+          Place Order
+        </button>
+      </div>
+
+      <div className="w-full max-w-4xl space-y-4">
+        <h2 className="text-xl font-semibold text-gray-800 mb-4">
+          Your Items ({cart.length})
+        </h2>
+
+        {cart.map((item, index) => (
+          <div
+            key={item.productId}
+            className="w-full bg-white rounded-lg shadow-md flex items-center p-4 relative hover:shadow-lg transition-shadow duration-300"
+          >
+            <img
+              src={item.image}
+              alt={item.name}
+              className="w-20 h-20 object-cover rounded-lg"
+            />
+
+            <div className="ml-4 flex-1">
+              <h3 className="text-lg font-semibold text-gray-800">
+                {item.name}
+              </h3>
+              <p className="text-sm text-gray-500">{item.productId}</p>
+
+              <div className="mt-2">
+                {item.labelledPrice > item.price ? (
+                  <div className="flex items-center">
+                    <span className="text-gray-500 line-through mr-2">
+                      Rs. {item.labelledPrice.toFixed(2)}
+                    </span>
+                    <span className="text-accent font-bold">
+                      Rs. {item.price.toFixed(2)}
+                    </span>
+                  </div>
+                ) : (
+                  <span className="text-accent font-bold">
+                    Rs. {item.price.toFixed(2)}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="flex items-center bg-gray-100 rounded-lg">
+              <button
+                className="p-2 text-gray-600 hover:bg-gray-200 rounded-l-lg"
+                onClick={() => changeQty(index, -1)}
+              >
+                <BiMinus size={18} />
+              </button>
+              <span className="px-4 font-medium">{item.qty}</span>
+              <button
+                className="p-2 text-gray-600 hover:bg-gray-200 rounded-r-lg"
+                onClick={() => changeQty(index, 1)}
+              >
+                <BiPlus size={18} />
+              </button>
+            </div>
+
+            <div className="ml-6 w-24 text-right">
+              <span className="font-bold text-gray-800">
+                Rs. {(item.price * item.qty).toFixed(2)}
+              </span>
+            </div>
+
+            <button
+              className="absolute top-2 right-2 p-1 text-gray-400 hover:text-red-500"
+              onClick={() => removeFromCart(index)}
+            >
+              <BiTrash size={20} />
+            </button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
