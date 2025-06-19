@@ -17,14 +17,18 @@ export default function ProductPage() {
 
   return (
     <div className="w-full min-h-screen bg-gradient-to-br from-orange-50 to-white pt-[90px] pb-8">
-      {/* Section Header */}
-      <div className="max-w-7xl mx-auto px-4 mb-6">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2 tracking-tight">
-          Featured Products
-        </h1>
-        <p className="text-gray-500 text-base md:text-lg">
-          Discover the latest deals and best sellers, just for you!
-        </p>
+      {/* Section Header with Banner */}
+      <div className="w-full bg-white py-4 md:py-6 mb-8 shadow-sm">
+        <div className="w-full flex justify-center">
+          <div className="w-4/5 max-w-7xl">
+            <img 
+              src="/Banner1.png"
+              alt="Company Banner" 
+              className="w-full h-auto object-cover rounded-lg" 
+              style={{ maxHeight: '350px' }} // Adjust height 
+            />
+          </div>
+        </div>
       </div>
 
       {/* Product Grid */}
