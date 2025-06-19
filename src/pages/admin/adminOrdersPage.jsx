@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Loading from "../../components/loading";
+import Loading from "../../components/Loading";
 import Modal from "react-modal";
 import {
   FiEye,

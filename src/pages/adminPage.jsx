@@ -21,7 +21,7 @@ export default function AdminPage() {
         <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
           <Link
             to="/admin/users"
-            className="flex items-center px-3 py-2 text-m font-medium rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600 transition-colors"
+            className="flex items-center px-3 py-2 text-m font-medium rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#982fc1] transition-colors"
           >
             <svg
               className="w-5 h-5 mr-3 text-gray-400"
@@ -41,7 +41,7 @@ export default function AdminPage() {
 
           <Link
             to="/admin/products"
-            className="flex items-center px-3 py-2 text-m font-medium rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600 transition-colors"
+            className="flex items-center px-3 py-2 text-m font-medium rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#982fc1] transition-colors"
           >
             <svg
               className="w-5 h-5 mr-3 text-gray-400"
@@ -61,7 +61,7 @@ export default function AdminPage() {
 
           <Link
             to="/admin/orders"
-            className="flex items-center px-3 py-2 text-m font-medium rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600 transition-colors"
+            className="flex items-center px-3 py-2 text-m font-medium rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#982fc1] transition-colors"
           >
             <svg
               className="w-5 h-5 mr-3 text-gray-400"
@@ -82,7 +82,7 @@ export default function AdminPage() {
           <div className="pt-4 mt-4 border-t border-gray-200">
             <Link
               to="/admin/settings"
-              className="flex items-center px-3 py-2 text-m font-medium rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600 transition-colors"
+              className="flex items-center px-3 py-2 text-m font-medium rounded-lg hover:bg-gray-100 text-gray-700 hover:text-[#982fc1] transition-colors"
             >
               <svg
                 className="w-5 h-5 mr-3 text-gray-400"
