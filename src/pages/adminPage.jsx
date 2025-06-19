@@ -1,8 +1,6 @@
 import toast from "react-hot-toast";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
-
-  
 export default function AdminPage() {
   const navigate = useNavigate();
 
@@ -10,12 +8,11 @@ export default function AdminPage() {
     // You can add any logout logic here (clearing tokens, etc.)
     // Then redirect to home page
     toast.success("You’ve been logged out successfully.");
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <div className="w-full h-screen flex bg-gray-50">
-      {/* Left Sidebar */}
       <div className="w-64 h-full bg-white border-r border-gray-200 shadow-sm flex flex-col">
         <div className="p-6 border-b border-gray-200">
           <h2 className="text-2xl font-bold text-gray-800">Admin Panel</h2>
@@ -62,7 +59,26 @@ export default function AdminPage() {
             Product Catalog
           </Link>
 
-          {/* Menu items  */}
+          <Link
+            to="/admin/orders"
+            className="flex items-center px-3 py-2 text-m font-medium rounded-lg hover:bg-gray-100 text-gray-700 hover:text-blue-600 transition-colors"
+          >
+            <svg
+              className="w-5 h-5 mr-3 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"
+              />
+            </svg>
+            Order Management
+          </Link>
+
           <div className="pt-4 mt-4 border-t border-gray-200">
             <Link
               to="/admin/settings"
@@ -117,13 +133,15 @@ export default function AdminPage() {
               </svg>
             </button> */}
             <div className="w-px h-6 bg-gray-200"></div>
-            <button className="text-lg text-gray-600 hover:text-blue-600" onClick={handleLogout}>
+            <button
+              className="text-lg text-gray-600 hover:text-blue-600"
+              onClick={handleLogout}
+            >
               Logout
             </button>
           </div>
         </header>
 
-        {/* Main content area */}
         <main className="flex-1 overflow-y-auto p-6 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             <div className="bg-white rounded-lg shadow-sm p-6">

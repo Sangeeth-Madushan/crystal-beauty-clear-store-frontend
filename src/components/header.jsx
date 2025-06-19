@@ -80,7 +80,7 @@ export default function Header() {
             >
               <FiShoppingCart className="w-6 h-6 text-gray-700" /> 
               <span className="absolute -top-1 -right-1 bg-[#982fc1] text-white text-sm font-bold rounded-full h-6 w-6 flex items-center justify-center">
-                1
+                0
               </span>
             </Link>
 
