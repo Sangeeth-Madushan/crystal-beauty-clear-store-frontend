@@ -15,6 +15,7 @@ import Users from "./pages/userPage";
 import ProductOverviewPage from "./pages/client/productOverview";
 import CartPage from "./pages/client/cart";
 import CheckoutPage from "./pages/client/checkOut";
+import SearchProductPage from "./pages/client/searchProducts";
  
 function App() {
   return (
@@ -23,10 +24,9 @@ function App() {
         <Toaster position="top-right"/>
         <Routes>
           <Route path="/" element={<HomePage />}>
-            <Route index element={<h1 className="pt-[80px]">Home</h1>} />
+            <Route index element={<ProductPage />} /> 
             <Route path="products" element={<ProductPage />} />
-            <Route path="about" element={<h1 className="pt-[80px]">About</h1>} />
-            <Route path="help" element={<h1 className="pt-[80px]">Help</h1>} />
+            <Route path="/search" element={<SearchProductPage/>}/>
             <Route path="*" element={<h1 className="pt-[80px]">Not Found!!</h1>} />
             <Route path="overview/:id" element={<ProductOverviewPage/>} />
             <Route path="cart" element={<CartPage/>}></Route>
