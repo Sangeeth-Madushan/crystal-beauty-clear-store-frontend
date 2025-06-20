@@ -9,7 +9,15 @@ import {
   FiCheckCircle,
   FiClock,
   FiAlertCircle,
+  FiUser,
+  FiMail,
+  FiPhone,
+  FiMapPin,
+  FiShoppingBag,
+  FiList,
+  FiActivity,
 } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 export default function AdminOrdersPage() {
   const [orders, setOrders] = useState([]);
@@ -23,7 +31,7 @@ export default function AdminOrdersPage() {
     if (isLoading) {
       const token = localStorage.getItem("token");
       if (!token) {
-        alert("Please login first");
+        toast.error("Please login first");
         return;
       }
       axios
@@ -37,7 +45,7 @@ export default function AdminOrdersPage() {
           setIsLoading(false);
         })
         .catch((e) => {
-          alert(
+          toast.error(
             "Error fetching orders: " +
               (e.response?.data?.message || "Unknown error")
           );
@@ -71,11 +79,11 @@ export default function AdminOrdersPage() {
         return null;
     }
   };
+  
 
   return (
     <div className="w-full h-full p-6 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-        {/* Header and Filters */}
         <div className="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           <h1 className="text-2xl font-bold text-gray-800">Order Management</h1>
 
@@ -84,7 +92,7 @@ export default function AdminOrdersPage() {
               <input
                 type="text"
                 placeholder="Search orders..."
-                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full"
+                className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#a751c9] focus:border-[rgb(144,47,193)] w-full"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
@@ -107,7 +115,7 @@ export default function AdminOrdersPage() {
             </div>
 
             <select
-              className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="border border-gray-300 rounded-lg px-4 py-2 focus:ring-2  focus:ring-[#a751c9] focus:border-[rgb(144,47,193)]"
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
             >
@@ -125,7 +133,6 @@ export default function AdminOrdersPage() {
           </div>
         ) : (
           <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-            {/* Orders Table */}
             <div className="overflow-x-auto">
               <table className="min-w-full divide-y divide-gray-200">
                 <thead className="bg-gray-50">
@@ -221,7 +228,7 @@ export default function AdminOrdersPage() {
                               setActiveOrder(order);
                               setIsModalOpen(true);
                             }}
-                            className="text-blue-600 hover:text-blue-900 mr-3"
+                            className="text-[#a751c9] hover:text-[rgb(144,47,193)] mr-3 cursor-pointer"
                             title="View Details"
                           >
                             <FiEye className="h-5 w-5" />
@@ -245,21 +252,21 @@ export default function AdminOrdersPage() {
           </div>
         )}
 
-        {/* Order Details Modal */}
         <Modal
           isOpen={isModalOpen}
           onRequestClose={() => setIsModalOpen(false)}
-          className="bg-white rounded-xl shadow-xl max-w-4xl mx-auto my-12 p-6 outline-none"
-          overlayClassName="fixed inset-0 bg-[#00000060]  backdrop-blur-sm flex justify-center items-start pt-12"
+          className="bg-white rounded-2xl shadow-2xl max-w-4xl mx-auto my-12 p-8 outline-none transition-all duration-300 ease-in-out transform"
+          overlayClassName="fixed inset-0 bg-black/30 backdrop-blur-sm flex justify-center items-start pt-12 animate-fadeIn"
         >
           {activeOrder && (
-            <div className="space-y-6">
+            <div className="space-y-8">
               <div className="flex justify-between items-start">
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-800">
-                    Order {activeOrder.orderId}
+                  <h2 className="text-3xl font-bold text-gray-800">
+                    {" "}
+                    <span className="text-[rgb(144,47,193)]">{activeOrder.orderId}</span>
                   </h2>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-500 mt-1">
                     {new Date(activeOrder.date).toLocaleDateString("en-GB", {
                       weekday: "long",
                       day: "numeric",
@@ -272,60 +279,125 @@ export default function AdminOrdersPage() {
                 </div>
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="text-gray-400 hover:text-gray-500"
+                  className="text-gray-400 hover:text-gray-600 transition-colors duration-200 p-1 rounded-full hover:bg-gray-100"
                 >
                   <FiX className="h-6 w-6" />
                 </button>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="text-lg font-medium text-gray-900 mb-3">
+                <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200/50">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center">
+                    <FiUser className="mr-2 text-[rgb(144,47,193)]" />
                     Customer Information
                   </h3>
-                  <div className="space-y-2">
-                    <p>
-                      <span className="font-medium">Name:</span>{" "}
-                      {activeOrder.name}
-                    </p>
-                    <p>
-                      <span className="font-medium">Email:</span>{" "}
-                      {activeOrder.email}
-                    </p>
-                    <p>
-                      <span className="font-medium">Phone:</span>{" "}
-                      {activeOrder.phone}
-                    </p>
-                    <p>
-                      <span className="font-medium">Address:</span>{" "}
-                      {activeOrder.address}
-                    </p>
+                  <div className="space-y-3 text-gray-700">
+                    <div className="flex items-start">
+                      <FiUser className="mt-1 mr-2 text-gray-400 flex-shrink-0" />
+                      <span>
+                        <span className="font-medium text-gray-900">Name:</span>{" "}
+                        {activeOrder.name}
+                      </span>
+                    </div>
+                    <div className="flex items-start">
+                      <FiMail className="mt-1 mr-2 text-gray-400 flex-shrink-0" />
+                      <span>
+                        <span className="font-medium text-gray-900">
+                          Email:
+                        </span>{" "}
+                        {activeOrder.email}
+                      </span>
+                    </div>
+                    <div className="flex items-start">
+                      <FiPhone className="mt-1 mr-2 text-gray-400 flex-shrink-0" />
+                      <span>
+                        <span className="font-medium text-gray-900">
+                          Phone:
+                        </span>{" "}
+                        {activeOrder.phone}
+                      </span>
+                    </div>
+                    <div className="flex items-start">
+                      <FiMapPin className="mt-1 mr-2 text-gray-400 flex-shrink-0" />
+                      <span>
+                        <span className="font-medium text-gray-900">
+                          Address:
+                        </span>{" "}
+                        {activeOrder.address}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="bg-gray-50 p-4 rounded-lg">
-                  <h3 className="text-lg font-medium text-gray-900 mb-3">
+                <div className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl border border-gray-200/50">
+                  <h3 className="text-lg font-semibold text-gray-800 mb-4 pb-2 border-b border-gray-200 flex items-center">
+                    <FiShoppingBag className="mr-2 text-[rgb(144,47,193)]" />
                     Order Summary
                   </h3>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span className="font-medium">Status:</span>
-                      <span
-                        className={`font-semibold ${
-                          activeOrder.status === "completed"
-                            ? "text-green-600"
-                            : activeOrder.status === "pending"
-                            ? "text-yellow-600"
-                            : "text-red-600"
-                        }`}
-                      >
-                        {getStatusIcon(activeOrder.status)}
-                        {activeOrder.status.charAt(0).toUpperCase() +
-                          activeOrder.status.slice(1)}
+                  <div className="space-y-3 text-gray-700">
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium text-gray-900 flex items-center">
+                        <FiActivity className="mr-2 text-gray-400" />
+                        Status:
                       </span>
+                      <div className="flex items-center space-x-3">
+                        <span
+                          className={`font-semibold px-2 py-1 rounded-full text-sm ${
+                            activeOrder.status === "completed"
+                              ? "bg-green-100 text-green-800"
+                              : activeOrder.status === "pending"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
+                          {getStatusIcon(activeOrder.status)}
+                          {activeOrder.status.charAt(0).toUpperCase() +
+                            activeOrder.status.slice(1)}
+                        </span>
+                        <select
+                          onChange={async (e) => {
+                            const updatedValue = e.target.value;
+                            try {
+                              const token = localStorage.getItem("token");
+                              await axios.put(
+                                import.meta.env.VITE_BACKEND_URL +
+                                  "/api/orders/" +
+                                  activeOrder.orderId +
+                                  "/" +
+                                  updatedValue,
+                                {},
+                                {
+                                  headers: {
+                                    Authorization: "Bearer " + token,
+                                  },
+                                }
+                              );
+
+                              setIsLoading(true);
+                              const updatedOrder = { ...activeOrder };
+                              updatedOrder.status = updatedValue;
+                              setActiveOrder(updatedOrder);
+                            } catch (e) {
+                              toast.error("Error updating order status");
+                              console.log(e);
+                            }
+                          }}
+                          className="text-xs border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-1 focus:ring-[rgb(144,47,193)]"
+                        >
+                          <option selected disabled>
+                            Change status
+                          </option>
+                          <option value="pending">Pending</option>
+                          <option value="completed">Completed</option>
+                          <option value="cancelled">Cancelled</option>
+                          <option value="returned">Returned</option>
+                        </select>
+                      </div>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-medium">Subtotal:</span>
+                      <span className="font-medium text-gray-900">
+                        Subtotal:
+                      </span>
                       <span>
                         {activeOrder.total.toLocaleString("en-LK", {
                           style: "currency",
@@ -335,12 +407,14 @@ export default function AdminOrdersPage() {
                       </span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="font-medium">Shipping:</span>
-                      <span>Free</span>
+                      <span className="font-medium text-gray-900">
+                        Shipping:
+                      </span>
+                      <span className="text-green-600">Free</span>
                     </div>
-                    <div className="flex justify-between border-t border-gray-200 pt-2 mt-2">
-                      <span className="font-bold">Total:</span>
-                      <span className="font-bold">
+                    <div className="flex justify-between border-t border-gray-200 pt-3 mt-3">
+                      <span className="font-bold text-gray-900">Total:</span>
+                      <span className="font-bold text-[rgb(144,47,193)]">
                         {activeOrder.total.toLocaleString("en-LK", {
                           style: "currency",
                           currency: "LKR",
@@ -353,10 +427,11 @@ export default function AdminOrdersPage() {
               </div>
 
               <div>
-                <h3 className="text-lg font-medium text-gray-900 mb-3">
+                <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+                  <FiList className="mr-2 text-[rgb(144,47,193)]" />
                   Order Items
                 </h3>
-                <div className="overflow-hidden border border-gray-200 rounded-lg">
+                <div className="overflow-hidden border border-gray-200 rounded-xl">
                   <table className="min-w-full divide-y divide-gray-200">
                     <thead className="bg-gray-50">
                       <tr>
@@ -388,12 +463,15 @@ export default function AdminOrdersPage() {
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {activeOrder.products.map((item, idx) => (
-                        <tr key={idx}>
+                        <tr
+                          key={idx}
+                          className="hover:bg-gray-50 transition-colors duration-150"
+                        >
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
-                              <div className="flex-shrink-0 h-10 w-10">
+                              <div className="flex-shrink-0 h-12 w-12">
                                 <img
-                                  className="h-10 w-10 rounded object-cover"
+                                  className="h-12 w-12 rounded-lg object-cover border border-gray-200"
                                   src={item.productInfo.images[0]}
                                   alt={item.productInfo.name}
                                 />
@@ -434,17 +512,17 @@ export default function AdminOrdersPage() {
                 </div>
               </div>
 
-              <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+              <div className="flex justify-end space-x-4 pt-6 border-t border-gray-200">
                 <button
                   onClick={() => window.print()}
-                  className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgb(144,47,193)] transition-all duration-200 cursor-pointer"
                 >
                   <FiPrinter className="-ml-1 mr-2 h-5 w-5 text-gray-500" />
                   Print
                 </button>
                 <button
                   onClick={() => setIsModalOpen(false)}
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-lg shadow-sm text-white bg-gradient-to-r from-[rgb(144,47,193)] to-[rgb(149,65,190)] hover:from-[rgb(146,56,190)] hover:to-[rgb(144,47,193)] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[rgb(144,47,193)] transition-all duration-200 cursor-pointer"
                 >
                   Close
                 </button>
