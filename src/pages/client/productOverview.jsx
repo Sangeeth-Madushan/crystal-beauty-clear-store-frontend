@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useNavigate, useParams } from "react-router-dom";
 import ImageSlider from "../../components/imageSlider";
-import Loading from "../../components/loading";
+import Loading from "../../components/Loading";
 import { addToCart, getCart } from "../../utils/cart";
 
 export default function ProductOverviewPage() {
@@ -31,15 +31,14 @@ export default function ProductOverviewPage() {
   return (
     <>
       {status == "success" && (
-        <div className="w-full h-screen flex pt-[80px]">
-          <div className="w-[50%] h-full flex justify-center items-center">
+        <div className="w-full h-screen flex flex-col md:flex-row pt-[80px]">
+          <div className=" w-full md:w-[50%] h-full flex justify-center items-center">
             <ImageSlider images={product.images} />
           </div>
-
-          <div className="w-full md:w-1/3 pt-[80px]">
+          <div className=" w-full md:w-[40%] pt-[80px]">
             <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg space-y-6">
               <div className="space-y-2 text-center border-b pb-4">
-                <h1 className="text-3xl md:text-4xl font-bold text-gray-800">
+                <h1 className="text-3xl  md:text-4xl font-bold text-gray-800">
                   {product.name}
                 </h1>
                 {product.altNames.length > 0 && (
@@ -95,7 +94,7 @@ export default function ProductOverviewPage() {
                 )}
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col md:flex-row gap-4">
                 <button
                   onClick={() => {
                     addToCart(product, 1);

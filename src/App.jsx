@@ -17,9 +17,12 @@ import CartPage from "./pages/client/cart";
 import CheckoutPage from "./pages/client/checkOut";
 import SearchProductPage from "./pages/client/searchProducts";
 import AdminOrdersPage from "./pages/admin/adminOrdersPage";
+import { GoogleOAuthProvider } from "@react-oauth/google";
+// client secruet = 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
  
 function App() {
   return (
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
     <BrowserRouter>
       <div>
         <Toaster position="top-right"/>
@@ -50,6 +53,7 @@ function App() {
         </Routes>
       </div>
     </BrowserRouter>
+    </GoogleOAuthProvider>
   );
 }
 export default App;

@@ -5,7 +5,7 @@ export default function ImageSlider(props) {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
-    <div className="w-[500px] h-[600px] bg-amber-50">
+    <div className="w-[90%] md:w-[550px] h-[600px] bg-amber-50">
       <img className="w-full h-[500px] object-cover rounded-2xl" src={images[currentIndex]} />
       <div className="w-full h-[100px] flex justify-center items-center">
         {images.map((image, index) => (
