@@ -1,6 +1,7 @@
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FiShoppingCart, FiUser, FiUserPlus, FiLogOut, FiSearch, FiX, FiMenu } from "react-icons/fi";
 import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
 export default function Header() {
   const [searchText, setSearchText] = useState("");
@@ -10,9 +11,9 @@ export default function Header() {
   const location = useLocation();
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
+    const token = localStorage.getItem('token');
     setIsLoggedIn(!!token);
-  }, []);
+  }, [location]);
 
   useEffect(() => {
     const delayDebounce = setTimeout(() => {
@@ -25,11 +26,16 @@ export default function Header() {
   }, [searchText, navigate]);
 
   const handleLogout = () => {
-    localStorage.removeItem('authToken');
+  const confirmLogout = window.confirm("Are you sure you want to logout?");
+  if (confirmLogout) {
+    localStorage.removeItem('token');
     setIsLoggedIn(false);
     setIsMobileMenuOpen(false);
     navigate('/');
-  };
+    toast.success("Logged out successfully");
+  }
+};
+
 
   const clearSearch = () => {
     setSearchText("");

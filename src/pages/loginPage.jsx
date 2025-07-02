@@ -12,17 +12,17 @@ export default function Login() {
 
   const googleLogin = useGoogleLogin({
     onSuccess: (response) => {
-      const accessToken = response.access_token;
       axios
         .post(import.meta.env.VITE_BACKEND_URL + "/api/users/login/google", {
-          accessToken: accessToken,
+          accessToken: response.access_token,
         })
         .then((response) => {
           toast.success("Login Successful");
-          const token = response.data.token;
-          localStorage.setItem("token", token);
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("role", response.data.role);
+
           if (response.data.role === "admin") {
-            navigate("/admin/");
+            navigate("/admin");
           } else {
             navigate("/");
           }
@@ -34,26 +34,20 @@ export default function Login() {
     try {
       const response = await axios.post(
         import.meta.env.VITE_BACKEND_URL + "/api/users/login",
-        {
-          email: email,
-          password: password,
-        }
+        { email, password }
       );
 
       toast.success("Login successfully");
-      console.log(response.data);
-
-      // store token in web-browser
       localStorage.setItem("token", response.data.token);
+      localStorage.setItem("role", response.data.role);
 
-      // check admin or user and sent to admin page
-      if (response.data.role == "admin") {
+      if (response.data.role === "admin") {
         navigate("/admin");
       } else {
         navigate("/");
       }
     } catch (error) {
-      toast.error(error.response.data.message);
+      toast.error(error.response?.data?.message || "Login failed");
     }
   }
 

@@ -18,6 +18,7 @@ import CheckoutPage from "./pages/client/checkOut";
 import SearchProductPage from "./pages/client/searchProducts";
 import AdminOrdersPage from "./pages/admin/adminOrdersPage";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import ProtectedAdminRoute from "./components/protectedAdmin";
 // client secruet = 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
  
 function App() {
@@ -40,7 +41,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
 
-          <Route path="/admin" element={<AdminPage />} >
+          <Route path="/admin/*" element={
+            <ProtectedAdminRoute>
+              <AdminPage />
+            </ProtectedAdminRoute>           
+          }>
             <Route path="users" element={<Users/>} />
             <Route path="products" element={<AdminProductPage />} />
             <Route path="orders" element={<AdminOrdersPage/>}/>
