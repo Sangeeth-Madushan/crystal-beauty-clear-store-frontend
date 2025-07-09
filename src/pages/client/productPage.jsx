@@ -33,12 +33,12 @@ export default function ProductPage() {
 
       {/* Product Grid */}
       <div className="max-w-7xl mx-auto px-2">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2 justify-items-center">
           {isLoading
             ? Array.from({ length: 10 }).map((_, index) => (
                 <div
                   key={index}
-                  className="w-full max-w-[250px] h-[360px] rounded-xl shadow bg-gray-100 p-4 animate-pulse"
+                  className="w-full max-w-[250px] h-[360px] gap-2 rounded-xl shadow bg-gray-100 p-4 animate-pulse"
                 >
                   <div className="w-full h-40 bg-gray-300 rounded-lg mb-4"></div>
                   <div className="h-5 bg-gray-300 rounded w-3/4 mb-2"></div>
